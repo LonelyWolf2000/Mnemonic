@@ -46,7 +46,7 @@ namespace Mnemonic
 
         private void OnChangeFieldsEvent_Handler()
         {
-            FillFormData();
+            _FillFormData();
         }
 
         private void _ReInitComboBox(string[] listValues, ComboBox target)
@@ -69,16 +69,99 @@ namespace Mnemonic
                 listQuestions.Text = dialog.Value;
                 _viewController.Subject = listSubjects.Text;
                 _viewController.Theme = listThemes.Text;
-                ChangeStatus();
+                _ChangeStatus();
             }
         }
 
         private void SaveQuestion_Click(object sender, EventArgs e)
-        {//todo - тут проблема
+        {
+            string newQuestion = _viewController.Question;
             _viewController.SaveDataObject();
             _ReInitComboBox(_viewController.QuestionsList, listQuestions);
-            //listQuestions.SelectedItem = _viewController.Question;
-            ChangeStatus();
+            listQuestions.SelectedItem = newQuestion;
+            _ChangeStatus();
+        }
+        
+        private void Term_TextChanged(object sender, EventArgs e)
+        {
+            _viewController.Term = tb_Term.Text;
+            if (!_isChangedCurrentQuestion)
+                _ChangeStatus();
+        }
+
+        private void Definition_TextChanged(object sender, EventArgs e)
+        {
+            _viewController.Definition = tb_Definition.Text;
+            if (!_isChangedCurrentQuestion)
+                _ChangeStatus();
+        }
+
+        private void CheckedChanged_RepeatMode(object sender, EventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            if (checkBox == null) return;
+
+            if (checkBox.Name == "rb_Twice" && checkBox.Checked)
+                _viewController.ModeRepeat = ModeRepeat.Twice_a_Day;
+            else if (checkBox.Name == "rb_OnceADay" && checkBox.Checked)
+                _viewController.ModeRepeat = ModeRepeat.Once_a_Day;
+            else if (checkBox.Name == "rb_EveryOtherDay" && checkBox.Checked)
+                _viewController.ModeRepeat = ModeRepeat.Every_Other_Day;
+            else if (checkBox.Name == "rb_OnceAWeek" && checkBox.Checked)
+                _viewController.ModeRepeat = ModeRepeat.Once_a_Week;
+            
+            if (!_isChangedCurrentQuestion)
+                _ChangeStatus();
+        }
+
+        private void CustomRepeat_TextChanged(object sender, EventArgs e)
+        {
+            if (tb_customRepeat.Text.Length != 0)
+            {
+                foreach (RadioButton rb in modeRepeat.Controls.OfType<RadioButton>())
+                    rb.Checked = false;
+
+                _viewController.ModeRepeat = ModeRepeat.Custom;
+                _viewController.RepeatTime = new DateTime().Add(TimeSpan.FromHours(Convert.ToDouble(tb_customRepeat.Text)));
+            }
+            else
+            {
+                _viewController.RepeatTime = new DateTime();
+                _viewController.ModeRepeat = ModeRepeat.Twice_a_Day;
+            }
+
+            if (!_isChangedCurrentQuestion)
+                _ChangeStatus();
+        }
+
+        private void CheckedChanged_TestMode(object sender, EventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            if(checkBox == null) return;
+
+            if(checkBox.Name == "rb_options" && checkBox.Checked)
+                _viewController.ModeTest = ModeTest.Options;
+            else if(checkBox.Name == "rb_writen" && checkBox.Checked)
+                _viewController.ModeTest = ModeTest.Writen;
+            else if (checkBox.Name == "rb_random" && checkBox.Checked)
+                _viewController.ModeTest = ModeTest.RandomMode;
+
+            if (!_isChangedCurrentQuestion)
+                _ChangeStatus();
+        }
+
+        private void ResetRating_CheckedChanged(object sender, EventArgs e)
+        {
+            _viewController.IsResetRaiting = chb_resetRating.Checked;
+            if (!_isChangedCurrentQuestion)
+                _ChangeStatus();
+        }
+
+        private void Complete_CheckedChanged(object sender, EventArgs e)
+        {
+            _viewController.IsCompleted = chb_complete.Checked;
+            if(!_isChangedCurrentQuestion)
+                _ChangeStatus();
         }
 
         private void DeleteQuestion_Click(object sender, EventArgs e)
@@ -143,7 +226,7 @@ namespace Mnemonic
             _viewController.Theme = listThemes.Text;
             _viewController.SelectedQuestion(((ComboBox)sender).Text);
 
-            FillFormData();
+            _FillFormData();
             btn_DeleteQuestion.Enabled = true;
         }
 
@@ -159,7 +242,41 @@ namespace Mnemonic
             _ReInitComboBox(_viewController.QuestionsList, listQuestions);
         }
 
-        private void FillFormData()
+        private void AddResousToDic_Click(object sender, EventArgs e)
+        {
+            var dialog = new ResDialog();
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+
+            Button button = (Button)sender;
+            if (button.Name == "btn_AddImage")
+            {
+                if (_viewController.Images == null)
+                    _viewController.Images = new Dictionary<string, string>();
+
+                _viewController.Images.Add(dialog.Description, dialog.Path);
+                lb_Images.Items.Clear();
+                lb_Images.Items.AddRange(_viewController.Images.Keys.ToArray());
+            }
+            if (button.Name == "btn_AddAudio")
+            {
+                if (_viewController.Audios == null)
+                    _viewController.Audios = new Dictionary<string, string>();
+
+                _viewController.Audios.Add(dialog.Description, dialog.Path);
+                lb_Audios.Items.Clear();
+                lb_Audios.Items.AddRange(_viewController.Audios.Keys.ToArray());
+            }
+
+            if (!_isChangedCurrentQuestion)
+                _ChangeStatus();
+        }
+
+        private void RemoveResousToDic_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void _FillFormData()
         {
             tb_Term.Text = _viewController.Term;
             tb_Definition.Text = _viewController.Definition;
@@ -204,7 +321,7 @@ namespace Mnemonic
             }
         }
 
-        private void ChangeStatus()
+        private void _ChangeStatus()
         {
             _isChangedCurrentQuestion = !_isChangedCurrentQuestion;
             btn_SaveQuestion.Enabled = !btn_SaveQuestion.Enabled;
@@ -219,6 +336,12 @@ namespace Mnemonic
                 l_status.ForeColor = Color.Red;
                 l_status.Text = "Не сохранено";
             }
+        }
+
+        private void _BlockNoNumberSymbol(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsNumber(e.KeyChar) || e.KeyChar == '\b')
+                e.Handled = true;
         }
     }
 }

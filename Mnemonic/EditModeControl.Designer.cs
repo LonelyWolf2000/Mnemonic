@@ -101,8 +101,6 @@
             "Геометрия",
             "Физика"});
             this.listQuestions.FormattingEnabled = true;
-            this.listQuestions.Items.AddRange(new object[] {
-            "Новая запись"});
             this.listQuestions.Location = new System.Drawing.Point(3, 21);
             this.listQuestions.Name = "listQuestions";
             this.listQuestions.Size = new System.Drawing.Size(121, 21);
@@ -167,6 +165,7 @@
             this.tb_Term.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tb_Term.Size = new System.Drawing.Size(289, 108);
             this.tb_Term.TabIndex = 5;
+            this.tb_Term.TextChanged += new System.EventHandler(this.Term_TextChanged);
             // 
             // label4
             // 
@@ -185,6 +184,7 @@
             this.tb_Definition.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tb_Definition.Size = new System.Drawing.Size(292, 163);
             this.tb_Definition.TabIndex = 7;
+            this.tb_Definition.TextChanged += new System.EventHandler(this.Definition_TextChanged);
             // 
             // label5
             // 
@@ -287,6 +287,8 @@
             this.tb_customRepeat.Name = "tb_customRepeat";
             this.tb_customRepeat.Size = new System.Drawing.Size(42, 20);
             this.tb_customRepeat.TabIndex = 1;
+            this.tb_customRepeat.TextChanged += new System.EventHandler(this.CustomRepeat_TextChanged);
+            this.tb_customRepeat.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._BlockNoNumberSymbol);
             // 
             // rb_OnceAWeek
             // 
@@ -298,6 +300,7 @@
             this.rb_OnceAWeek.TabStop = true;
             this.rb_OnceAWeek.Text = "1 раз в неделю";
             this.rb_OnceAWeek.UseVisualStyleBackColor = true;
+            this.rb_OnceAWeek.CheckedChanged += new System.EventHandler(this.CheckedChanged_RepeatMode);
             // 
             // rb_EveryOtherDay
             // 
@@ -309,6 +312,7 @@
             this.rb_EveryOtherDay.TabStop = true;
             this.rb_EveryOtherDay.Text = "Через день";
             this.rb_EveryOtherDay.UseVisualStyleBackColor = true;
+            this.rb_EveryOtherDay.CheckedChanged += new System.EventHandler(this.CheckedChanged_RepeatMode);
             // 
             // rb_OnceADay
             // 
@@ -320,6 +324,7 @@
             this.rb_OnceADay.TabStop = true;
             this.rb_OnceADay.Text = "1 раз в день";
             this.rb_OnceADay.UseVisualStyleBackColor = true;
+            this.rb_OnceADay.CheckedChanged += new System.EventHandler(this.CheckedChanged_RepeatMode);
             // 
             // rb_Twice
             // 
@@ -331,6 +336,7 @@
             this.rb_Twice.TabStop = true;
             this.rb_Twice.Text = "2 раза в день";
             this.rb_Twice.UseVisualStyleBackColor = true;
+            this.rb_Twice.CheckedChanged += new System.EventHandler(this.CheckedChanged_RepeatMode);
             // 
             // btn_SaveQuestion
             // 
@@ -400,6 +406,7 @@
             this.btn_AddImage.TabIndex = 17;
             this.btn_AddImage.Text = "+";
             this.btn_AddImage.UseVisualStyleBackColor = true;
+            this.btn_AddImage.Click += new System.EventHandler(this.AddResousToDic_Click);
             // 
             // btn_RemoveTheme
             // 
@@ -434,6 +441,7 @@
             this.btn_AddAudio.TabIndex = 17;
             this.btn_AddAudio.Text = "+";
             this.btn_AddAudio.UseVisualStyleBackColor = true;
+            this.btn_AddAudio.Click += new System.EventHandler(this.AddResousToDic_Click);
             // 
             // btn_RemoveAudio
             // 
@@ -467,6 +475,7 @@
             this.chb_complete.TabIndex = 3;
             this.chb_complete.Text = "Изучено (больше не повторять)";
             this.chb_complete.UseVisualStyleBackColor = true;
+            this.chb_complete.CheckedChanged += new System.EventHandler(this.Complete_CheckedChanged);
             // 
             // chb_resetRating
             // 
@@ -477,6 +486,7 @@
             this.chb_resetRating.TabIndex = 2;
             this.chb_resetRating.Text = "Сбросить балл";
             this.chb_resetRating.UseVisualStyleBackColor = true;
+            this.chb_resetRating.CheckedChanged += new System.EventHandler(this.ResetRating_CheckedChanged);
             // 
             // l_currentRating
             // 
@@ -520,6 +530,7 @@
             this.rb_random.TabStop = true;
             this.rb_random.Text = "Случайный режим";
             this.rb_random.UseVisualStyleBackColor = true;
+            this.rb_random.CheckedChanged += new System.EventHandler(this.CheckedChanged_TestMode);
             // 
             // rb_writen
             // 
@@ -531,6 +542,7 @@
             this.rb_writen.TabStop = true;
             this.rb_writen.Text = "Ручная запись";
             this.rb_writen.UseVisualStyleBackColor = true;
+            this.rb_writen.CheckedChanged += new System.EventHandler(this.CheckedChanged_TestMode);
             // 
             // rb_options
             // 
@@ -542,6 +554,7 @@
             this.rb_options.TabStop = true;
             this.rb_options.Text = "Варианты ответа";
             this.rb_options.UseVisualStyleBackColor = true;
+            this.rb_options.CheckedChanged += new System.EventHandler(this.CheckedChanged_TestMode);
             // 
             // EditingPanel
             // 

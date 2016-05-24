@@ -35,7 +35,7 @@ namespace Mnemonic.View
             _agentController = AgentController.Instance;
         }
 
-        private bool isResetRaiting;
+        //private bool isResetRaiting;
         public string Question { get; set; }
         public string Subject { get; set; }
         public string Theme { get; set; }
@@ -48,7 +48,7 @@ namespace Mnemonic.View
         public ModeRepeat ModeRepeat { get; set; }
         public DateTime RepeatTime { get; set; }
         public bool IsCompleted { get; set; }
-        public bool IsResetRaiting => isResetRaiting;
+        public bool IsResetRaiting { get; set; }
 
         public string[] SubjectsList { get; set; }
 
@@ -196,7 +196,7 @@ namespace Mnemonic.View
             this.ModeRepeat = ModeRepeat.Twice_a_Day;
             this.RepeatTime = new DateTime();
             this.IsCompleted = false;
-            this.isResetRaiting = false;
+            this.IsResetRaiting = false;
         }
     }
 }

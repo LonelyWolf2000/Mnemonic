@@ -41,7 +41,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.lb_Images = new System.Windows.Forms.ListBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.previewPicture = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.lb_Audios = new System.Windows.Forms.ListBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -73,12 +72,14 @@
             this.rb_writen = new System.Windows.Forms.RadioButton();
             this.rb_options = new System.Windows.Forms.RadioButton();
             this.EditingPanel = new System.Windows.Forms.Panel();
+            this.l_errorPreview = new System.Windows.Forms.Label();
             this.btn_AddQuestion = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.previewPicture)).BeginInit();
+            this.previewPicture = new System.Windows.Forms.PictureBox();
             this.modeRepeat.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.EditingPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.previewPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // listSubjects
@@ -202,6 +203,7 @@
             this.lb_Images.Name = "lb_Images";
             this.lb_Images.Size = new System.Drawing.Size(122, 30);
             this.lb_Images.TabIndex = 9;
+            this.lb_Images.SelectedValueChanged += new System.EventHandler(this.Images_SelectedValueChanged);
             // 
             // label6
             // 
@@ -211,14 +213,6 @@
             this.label6.Size = new System.Drawing.Size(137, 13);
             this.label6.TabIndex = 10;
             this.label6.Text = "Графические материалы:";
-            // 
-            // previewPicture
-            // 
-            this.previewPicture.Location = new System.Drawing.Point(555, 71);
-            this.previewPicture.Name = "previewPicture";
-            this.previewPicture.Size = new System.Drawing.Size(340, 340);
-            this.previewPicture.TabIndex = 11;
-            this.previewPicture.TabStop = false;
             // 
             // label7
             // 
@@ -236,6 +230,7 @@
             this.lb_Audios.Name = "lb_Audios";
             this.lb_Audios.Size = new System.Drawing.Size(122, 30);
             this.lb_Audios.TabIndex = 13;
+            this.lb_Audios.SelectedValueChanged += new System.EventHandler(this.Audio_SelectedValueChanged);
             // 
             // label8
             // 
@@ -406,7 +401,7 @@
             this.btn_AddImage.TabIndex = 17;
             this.btn_AddImage.Text = "+";
             this.btn_AddImage.UseVisualStyleBackColor = true;
-            this.btn_AddImage.Click += new System.EventHandler(this.AddResousToDic_Click);
+            this.btn_AddImage.Click += new System.EventHandler(this.AddImage_Click);
             // 
             // btn_RemoveTheme
             // 
@@ -430,6 +425,7 @@
             this.btn_RemoveImage.TabIndex = 17;
             this.btn_RemoveImage.Text = "-";
             this.btn_RemoveImage.UseVisualStyleBackColor = true;
+            this.btn_RemoveImage.Click += new System.EventHandler(this.RemoveImage_Click);
             // 
             // btn_AddAudio
             // 
@@ -441,7 +437,7 @@
             this.btn_AddAudio.TabIndex = 17;
             this.btn_AddAudio.Text = "+";
             this.btn_AddAudio.UseVisualStyleBackColor = true;
-            this.btn_AddAudio.Click += new System.EventHandler(this.AddResousToDic_Click);
+            this.btn_AddAudio.Click += new System.EventHandler(this.AddAudio_Click);
             // 
             // btn_RemoveAudio
             // 
@@ -453,6 +449,7 @@
             this.btn_RemoveAudio.TabIndex = 17;
             this.btn_RemoveAudio.Text = "-";
             this.btn_RemoveAudio.UseVisualStyleBackColor = true;
+            this.btn_RemoveAudio.Click += new System.EventHandler(this.RemoveAudio_Click);
             // 
             // groupBox1
             // 
@@ -505,8 +502,9 @@
             this.l_status.ForeColor = System.Drawing.Color.Red;
             this.l_status.Location = new System.Drawing.Point(345, 416);
             this.l_status.Name = "l_status";
-            this.l_status.Size = new System.Drawing.Size(0, 25);
+            this.l_status.Size = new System.Drawing.Size(76, 25);
             this.l_status.TabIndex = 19;
+            this.l_status.Text = "status";
             // 
             // groupBox2
             // 
@@ -558,6 +556,7 @@
             // 
             // EditingPanel
             // 
+            this.EditingPanel.Controls.Add(this.l_errorPreview);
             this.EditingPanel.Controls.Add(this.groupBox2);
             this.EditingPanel.Controls.Add(this.l_status);
             this.EditingPanel.Controls.Add(this.groupBox1);
@@ -595,6 +594,19 @@
             this.EditingPanel.Size = new System.Drawing.Size(905, 454);
             this.EditingPanel.TabIndex = 2;
             // 
+            // l_errorPreview
+            // 
+            this.l_errorPreview.AutoSize = true;
+            this.l_errorPreview.BackColor = System.Drawing.SystemColors.Control;
+            this.l_errorPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.l_errorPreview.ForeColor = System.Drawing.Color.DarkGray;
+            this.l_errorPreview.Location = new System.Drawing.Point(571, 230);
+            this.l_errorPreview.Name = "l_errorPreview";
+            this.l_errorPreview.Size = new System.Drawing.Size(312, 20);
+            this.l_errorPreview.TabIndex = 21;
+            this.l_errorPreview.Text = "Не удалось загрузить изображение";
+            this.l_errorPreview.Visible = false;
+            // 
             // btn_AddQuestion
             // 
             this.btn_AddQuestion.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -607,6 +619,15 @@
             this.btn_AddQuestion.UseVisualStyleBackColor = true;
             this.btn_AddQuestion.Click += new System.EventHandler(this.AddQuestion_Click);
             // 
+            // previewPicture
+            // 
+            this.previewPicture.Location = new System.Drawing.Point(555, 71);
+            this.previewPicture.Name = "previewPicture";
+            this.previewPicture.Size = new System.Drawing.Size(340, 340);
+            this.previewPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.previewPicture.TabIndex = 11;
+            this.previewPicture.TabStop = false;
+            // 
             // EditModeControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -614,7 +635,6 @@
             this.Controls.Add(this.EditingPanel);
             this.Name = "EditModeControl";
             this.Size = new System.Drawing.Size(904, 454);
-            ((System.ComponentModel.ISupportInitialize)(this.previewPicture)).EndInit();
             this.modeRepeat.ResumeLayout(false);
             this.modeRepeat.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -623,6 +643,7 @@
             this.groupBox2.PerformLayout();
             this.EditingPanel.ResumeLayout(false);
             this.EditingPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.previewPicture)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -675,5 +696,6 @@
         private System.Windows.Forms.CheckBox chb_resetRating;
         private System.Windows.Forms.CheckBox chb_complete;
         private System.Windows.Forms.Button btn_AddQuestion;
+        private System.Windows.Forms.Label l_errorPreview;
     }
 }

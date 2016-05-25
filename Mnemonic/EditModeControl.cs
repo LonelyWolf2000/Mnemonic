@@ -51,11 +51,14 @@ namespace Mnemonic
 
         private void _ReInitComboBox(string[] listValues, ComboBox target)
         {
-            if (listValues == null) return;
-            
             target.Items.Clear();
+            if (listValues == null)
+            {
+                target.Text = @"Нет элементов";
+                return;
+            }
+            
             target.Items.AddRange(listValues);
-
             target.SelectedIndex = 0;
         }
 
@@ -77,40 +80,40 @@ namespace Mnemonic
         {
             string newQuestion = _viewController.Question;
             _viewController.SaveDataObject();
+            _ChangeStatus();
             _ReInitComboBox(_viewController.QuestionsList, listQuestions);
             listQuestions.SelectedItem = newQuestion;
-            _ChangeStatus();
         }
         
         private void Term_TextChanged(object sender, EventArgs e)
         {
             _viewController.Term = tb_Term.Text;
-            if (!_isChangedCurrentQuestion)
+            if (!_isChangedCurrentQuestion && tb_Term.Focused)
                 _ChangeStatus();
         }
 
         private void Definition_TextChanged(object sender, EventArgs e)
         {
             _viewController.Definition = tb_Definition.Text;
-            if (!_isChangedCurrentQuestion)
+            if (!_isChangedCurrentQuestion && tb_Definition.Focused)
                 _ChangeStatus();
         }
 
         private void CheckedChanged_RepeatMode(object sender, EventArgs e)
         {
-            CheckBox checkBox = sender as CheckBox;
-            if (checkBox == null) return;
+            RadioButton radioButton = sender as RadioButton;
+            if (radioButton == null) return;
 
-            if (checkBox.Name == "rb_Twice" && checkBox.Checked)
+            if (radioButton.Name == "rb_Twice" && radioButton.Checked)
                 _viewController.ModeRepeat = ModeRepeat.Twice_a_Day;
-            else if (checkBox.Name == "rb_OnceADay" && checkBox.Checked)
+            else if (radioButton.Name == "rb_OnceADay" && radioButton.Checked)
                 _viewController.ModeRepeat = ModeRepeat.Once_a_Day;
-            else if (checkBox.Name == "rb_EveryOtherDay" && checkBox.Checked)
+            else if (radioButton.Name == "rb_EveryOtherDay" && radioButton.Checked)
                 _viewController.ModeRepeat = ModeRepeat.Every_Other_Day;
-            else if (checkBox.Name == "rb_OnceAWeek" && checkBox.Checked)
+            else if (radioButton.Name == "rb_OnceAWeek" && radioButton.Checked)
                 _viewController.ModeRepeat = ModeRepeat.Once_a_Week;
             
-            if (!_isChangedCurrentQuestion)
+            if (!_isChangedCurrentQuestion && radioButton.Focused)
                 _ChangeStatus();
         }
 
@@ -130,30 +133,30 @@ namespace Mnemonic
                 _viewController.ModeRepeat = ModeRepeat.Twice_a_Day;
             }
 
-            if (!_isChangedCurrentQuestion)
+            if (!_isChangedCurrentQuestion && tb_customRepeat.Focused)
                 _ChangeStatus();
         }
 
         private void CheckedChanged_TestMode(object sender, EventArgs e)
         {
-            CheckBox checkBox = sender as CheckBox;
-            if(checkBox == null) return;
+            RadioButton radioButton = sender as RadioButton;
+            if(radioButton == null) return;
 
-            if(checkBox.Name == "rb_options" && checkBox.Checked)
+            if(radioButton.Name == "rb_options" && radioButton.Checked)
                 _viewController.ModeTest = ModeTest.Options;
-            else if(checkBox.Name == "rb_writen" && checkBox.Checked)
+            else if(radioButton.Name == "rb_writen" && radioButton.Checked)
                 _viewController.ModeTest = ModeTest.Writen;
-            else if (checkBox.Name == "rb_random" && checkBox.Checked)
+            else if (radioButton.Name == "rb_random" && radioButton.Checked)
                 _viewController.ModeTest = ModeTest.RandomMode;
 
-            if (!_isChangedCurrentQuestion)
+            if (!_isChangedCurrentQuestion && radioButton.Focused)
                 _ChangeStatus();
         }
 
         private void ResetRating_CheckedChanged(object sender, EventArgs e)
         {
             _viewController.IsResetRaiting = chb_resetRating.Checked;
-            if (!_isChangedCurrentQuestion)
+            if (!_isChangedCurrentQuestion && chb_complete.Focused)
                 _ChangeStatus();
         }
 
@@ -222,6 +225,15 @@ namespace Mnemonic
 
         private void listQuestions_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (_isChangedCurrentQuestion)
+            {
+                DialogResult result = MessageBox.Show(@"Если вы перейдете, все не сохраненные изменения будут утрачены", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel);
+                if (result != DialogResult.Cancel)
+                    _ChangeStatus();
+                else
+                    return;
+            }
+
             _viewController.Subject = listSubjects.Text;
             _viewController.Theme = listThemes.Text;
             _viewController.SelectedQuestion(((ComboBox)sender).Text);
@@ -232,57 +244,103 @@ namespace Mnemonic
 
         private void listSubjects_SelectedIndexChanged(object sender, EventArgs e)
         {
+            _ResetFields();
             _viewController.SelectedSubject(((ComboBox) sender).Text);
             _ReInitComboBox(_viewController.ThemesList, listThemes);
         }
 
         private void listThemes_SelectedIndexChanged(object sender, EventArgs e)
         {
+            _ResetFields();
             _viewController.SelectedTheme(listSubjects.Text, ((ComboBox) sender).Text);
             _ReInitComboBox(_viewController.QuestionsList, listQuestions);
         }
 
-        private void AddResousToDic_Click(object sender, EventArgs e)
+        private void AddImage_Click(object sender, EventArgs e)
         {
-            var dialog = new ResDialog();
-            if (dialog.ShowDialog() != DialogResult.OK) return;
+            if(_viewController.Images == null)
+                _viewController.Images = new Dictionary<string, string>();
 
-            Button button = (Button)sender;
-            if (button.Name == "btn_AddImage")
-            {
-                if (_viewController.Images == null)
-                    _viewController.Images = new Dictionary<string, string>();
+            if(_AddItemInDictionary(_viewController.Images))
+                lb_Images.Items.Add(_viewController.Images.Last().Key);
 
-                _viewController.Images.Add(dialog.Description, dialog.Path);
-                lb_Images.Items.Clear();
-                lb_Images.Items.AddRange(_viewController.Images.Keys.ToArray());
-            }
-            if (button.Name == "btn_AddAudio")
-            {
-                if (_viewController.Audios == null)
-                    _viewController.Audios = new Dictionary<string, string>();
-
-                _viewController.Audios.Add(dialog.Description, dialog.Path);
-                lb_Audios.Items.Clear();
-                lb_Audios.Items.AddRange(_viewController.Audios.Keys.ToArray());
-            }
-
-            if (!_isChangedCurrentQuestion)
+            if (!_isChangedCurrentQuestion && lb_Images.Focused)
                 _ChangeStatus();
         }
 
-        private void RemoveResousToDic_Click(object sender, EventArgs e)
+        private void AddAudio_Click(object sender, EventArgs e)
+        {
+            if (_viewController.Audios == null)
+                _viewController.Audios = new Dictionary<string, string>();
+
+            if(_AddItemInDictionary(_viewController.Audios))
+                lb_Audios.Items.Add(_viewController.Audios.Last().Key);
+
+            if (!_isChangedCurrentQuestion && lb_Audios.Focused)
+                _ChangeStatus();
+        }
+
+        private void RemoveImage_Click(object sender, EventArgs e)
+        {
+            if (lb_Images.Items.Count > 0)
+            {
+                if (MessageBox.Show(@"Вы уверены, что хотите удалить ссылку на файл из БД?", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+
+                _viewController.Images?.Remove(Convert.ToString(lb_Images.SelectedItem));
+                lb_Images.Items.Remove(lb_Images.SelectedItem);
+
+                if (!_isChangedCurrentQuestion)
+                    _ChangeStatus();
+            }
+        }
+
+        private void RemoveAudio_Click(object sender, EventArgs e)
+        {
+            if (lb_Audios.Items.Count > 0)
+            {
+                if (MessageBox.Show(@"Вы уверены, что хотите удалить ссылку на файл из БД?", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+
+                _viewController.Audios?.Remove(Convert.ToString(lb_Audios.SelectedItem));
+                lb_Audios.Items.Remove(lb_Audios.SelectedItem);
+
+                if (!_isChangedCurrentQuestion)
+                    _ChangeStatus();
+            }
+        }
+
+        private void Images_SelectedValueChanged(object sender, EventArgs e)
+        {
+            string uri;
+            _viewController.Images.TryGetValue(lb_Images.Text, out uri);
+            previewPicture.Image = null;
+            l_errorPreview.Visible = false;
+
+            try
+            {
+                previewPicture.Load(uri);
+            }
+            catch (Exception)
+            {
+                l_errorPreview.Visible = true;
+            }
+        }
+        private void Audio_SelectedValueChanged(object sender, EventArgs e)
         {
 
         }
 
         private void _FillFormData()
         {
+            l_errorPreview.Visible = false;
+            lb_Images.Items.Clear();
+            lb_Audios.Items.Clear();
+
             tb_Term.Text = _viewController.Term;
             tb_Definition.Text = _viewController.Definition;
             l_currentRating.Text = @"Текущий балл: " + _viewController.Rating;
             chb_complete.Checked = _viewController.IsCompleted;
 
+            
             if (_viewController.Images != null && _viewController.Images.Any())
                 lb_Images.Items.AddRange(_viewController.Images.Keys.ToArray());
             if (_viewController.Audios != null && _viewController.Audios.Any())
@@ -319,8 +377,11 @@ namespace Mnemonic
                     rb_random.Checked = true;
                     break;
             }
-        }
 
+            //todo- протестить
+            if (_isChangedCurrentQuestion)
+                _ChangeStatus();
+        }
         private void _ChangeStatus()
         {
             _isChangedCurrentQuestion = !_isChangedCurrentQuestion;
@@ -329,19 +390,54 @@ namespace Mnemonic
             if (!_isChangedCurrentQuestion)
             {
                 l_status.ForeColor = Color.Green;
-                l_status.Text = "Сохранено";
+                l_status.Text = @"Сохранено";
             }
             else
             {
                 l_status.ForeColor = Color.Red;
-                l_status.Text = "Не сохранено";
+                l_status.Text = @"Не сохранено";
             }
         }
+        private bool _AddItemInDictionary(IDictionary<string, string> target)
+        {
+            var dialog = new ResDialog();
 
+            while (true)
+            {
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return false;
+                if (!target.ContainsKey(dialog.Description))
+                    break;
+
+                MessageBox.Show(@"Ссылка с таким описанием уже содежится в списке.");
+            }
+
+            target.Add(dialog.Description, dialog.Path);
+            return true;
+        }
         private void _BlockNoNumberSymbol(object sender, KeyPressEventArgs e)
         {
             if (!Char.IsNumber(e.KeyChar) || e.KeyChar == '\b')
                 e.Handled = true;
+        }
+
+        private void _ResetFields()
+        {
+            if (_isChangedCurrentQuestion)
+            {
+                DialogResult result = MessageBox.Show(@"Если вы перейдете, все не сохраненные изменения будут утрачены", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel);
+                if (result != DialogResult.Cancel)
+                    _ChangeStatus();
+                else
+                    return;
+            }
+
+            listQuestions.Items.Clear();
+            listQuestions.Text = @"Нет элементов";
+            lb_Images.Items.Clear();
+            lb_Audios.Items.Clear();
+            tb_Term.Clear();
+            tb_Definition.Clear();
         }
     }
 }

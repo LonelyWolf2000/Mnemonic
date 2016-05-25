@@ -37,7 +37,6 @@
             // 
             // btn_OK
             // 
-            this.btn_OK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btn_OK.Location = new System.Drawing.Point(31, 66);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(75, 23);
@@ -83,9 +82,10 @@
             // 
             // btn_OpenRes
             // 
-            this.btn_OpenRes.Location = new System.Drawing.Point(301, 40);
+            this.btn_OpenRes.Image = global::Mnemonic.Properties.Resources.folder;
+            this.btn_OpenRes.Location = new System.Drawing.Point(300, 40);
             this.btn_OpenRes.Name = "btn_OpenRes";
-            this.btn_OpenRes.Size = new System.Drawing.Size(25, 20);
+            this.btn_OpenRes.Size = new System.Drawing.Size(26, 20);
             this.btn_OpenRes.TabIndex = 4;
             this.btn_OpenRes.UseVisualStyleBackColor = true;
             this.btn_OpenRes.Click += new System.EventHandler(this.btn_OpenRes_Click);
@@ -94,7 +94,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 98);
+            this.ClientSize = new System.Drawing.Size(332, 98);
             this.Controls.Add(this.btn_OpenRes);
             this.Controls.Add(this.tb_Path);
             this.Controls.Add(this.tb_Description);

@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Mnemonic
 {
     public partial class ResDialog : Form
-    {//todo - добавить иконочку на кнопку
+    {
         private string _description ="";
         private string _path = "";
         private const string _DESCRIPTION_CAP = @"Введите краткое описание файла";
@@ -34,10 +27,8 @@ namespace Mnemonic
 
         private void btn_OK_Click(object sender, EventArgs e)
         {
-            if (_path == "" && _description == "")
+            if (((Button)sender).DialogResult != DialogResult.OK)
                 MessageBox.Show(@"Поля нужно заполнить");
-            else
-                this.Close();
         }
 
         private void btn_Cancel_Click(object sender, EventArgs e)
@@ -53,6 +44,9 @@ namespace Mnemonic
                 _path = dialog.FileName;
                 tb_Path.Text = Path;
                 tb_Path.ForeColor = Color.Black;
+
+                if(_description != null)
+                    btn_OK.DialogResult = DialogResult.OK;
             }
         }
 
@@ -72,18 +66,26 @@ namespace Mnemonic
 
             if (textBox.Name == "tb_Description")
             {
-                if(textBox.Text.Length < 1)
+                if (textBox.Text.Length < 1)
+                {
+                    _description = "";
                     _SetCapTextBox(textBox, _DESCRIPTION_CAP);
+                }
                 else
                     _description = textBox.Text;
             }
             else
             {
                 if (textBox.Text.Length < 1)
+                {
+                    _path = "";
                     _SetCapTextBox(textBox, _PATH_CAP);
+                }
                 else
                     _path = textBox.Text;
             }
+
+            btn_OK.DialogResult = (_path != "" && _description != "") ? DialogResult.OK : DialogResult.None;
         }
 
         private void _SetCapTextBox(TextBox target, string cap)

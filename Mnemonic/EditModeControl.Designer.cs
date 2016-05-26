@@ -204,6 +204,7 @@
             this.lb_Images.Size = new System.Drawing.Size(122, 30);
             this.lb_Images.TabIndex = 9;
             this.lb_Images.SelectedValueChanged += new System.EventHandler(this.Images_SelectedValueChanged);
+            this.lb_Images.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Images_MouseDoubleClick);
             // 
             // label6
             // 
@@ -231,6 +232,7 @@
             this.lb_Audios.Size = new System.Drawing.Size(122, 30);
             this.lb_Audios.TabIndex = 13;
             this.lb_Audios.SelectedValueChanged += new System.EventHandler(this.Audio_SelectedValueChanged);
+            this.lb_Audios.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Audios_MouseDoubleClick);
             // 
             // label8
             // 
@@ -497,14 +499,14 @@
             // 
             // l_status
             // 
-            this.l_status.AutoSize = true;
-            this.l_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.l_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.l_status.ForeColor = System.Drawing.Color.Red;
-            this.l_status.Location = new System.Drawing.Point(345, 416);
+            this.l_status.Location = new System.Drawing.Point(308, 420);
             this.l_status.Name = "l_status";
-            this.l_status.Size = new System.Drawing.Size(76, 25);
+            this.l_status.Size = new System.Drawing.Size(262, 25);
             this.l_status.TabIndex = 19;
-            this.l_status.Text = "status";
+            this.l_status.Text = "База данных не загружена";
+            this.l_status.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox2
             // 

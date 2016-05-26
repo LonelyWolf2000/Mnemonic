@@ -15,7 +15,6 @@ namespace Mnemonic
     {
         private string fileName;
 
-        //public event ViewEvents.OnFileLoaded fileLoadedEvent;
         public MainForm()
         {
             InitializeComponent();
@@ -43,6 +42,11 @@ namespace Mnemonic
             TestingModeControl.Instance.BringToFront();
         }
 
+        private void CreateNew(object sender, EventArgs e)
+        {
+            _CreateNewEndSave();
+        }
+
         private void openMenuItem_Click(object sender, EventArgs e)
         {
             var dialog = new OpenFileDialog {Filter = @"XML-file (*.xml)|*.xml|All files (*.*)|(*.*)"};
@@ -50,6 +54,8 @@ namespace Mnemonic
             {
                 fileName = dialog.FileName;
                 ViewEditMode.Instance.OpenDataBase(fileName);
+                if (!((ViewEditMode)ViewEditMode.Instance).IsDataBaseLoaded)
+                    MessageBox.Show(@"Не удалось открыть файл.");
             }
         }
 

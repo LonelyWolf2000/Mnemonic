@@ -10,19 +10,8 @@ namespace Mnemonic.Model
 {
     internal class DataWork : IDataWork
     {
-        //private static IDataWork _instance;
         private XDocument currentDataBase;
         private const string NAMEOFROOTNODE = "MnemonicDataBase";
-
-        //public static IDataWork Instance
-        //{
-        //    get
-        //    {
-        //        if(_instance == null)
-        //            _instance = new DataWork();
-        //        return _instance;
-        //    }
-        //}
 
         public bool CreateNewDB(string path)
         {

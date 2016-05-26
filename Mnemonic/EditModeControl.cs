@@ -14,6 +14,7 @@ namespace Mnemonic
 {
     public partial class EditModeControl : UserControl
     {
+        private const string _NOELEMENT = @"Нет элементов";
         private static EditModeControl _instance;
         private ViewEditMode _viewController;
         private bool _isChangedCurrentQuestion;
@@ -39,9 +40,14 @@ namespace Mnemonic
 
         private void OnFileLoadedEvent_Handler()
         {
+            if(!_viewController.IsDataBaseLoaded) return;
+            
             _ReInitComboBox(_viewController.SubjectsList, listSubjects);
             _ReInitComboBox(_viewController.ThemesList, listThemes);
             _ReInitComboBox(_viewController.QuestionsList, listQuestions);
+
+            l_status.ForeColor = Color.Green;
+            l_status.Text = @"База данных загружена";
         }
 
         private void OnChangeFieldsEvent_Handler()
@@ -54,7 +60,7 @@ namespace Mnemonic
             target.Items.Clear();
             if (listValues == null)
             {
-                target.Text = @"Нет элементов";
+                target.Text = _NOELEMENT;
                 return;
             }
             
@@ -64,6 +70,12 @@ namespace Mnemonic
 
         private void AddQuestion_Click(object sender, EventArgs e)
         {
+            if (listThemes.Items.Count < 1)
+            {
+                MessageBox.Show(@"Добавте сначала хотя бы одну тему.");
+                return;
+            }
+
             var dialog = new NameDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -72,7 +84,10 @@ namespace Mnemonic
                 listQuestions.Text = dialog.Value;
                 _viewController.Subject = listSubjects.Text;
                 _viewController.Theme = listThemes.Text;
-                _ChangeStatus();
+
+                _viewController.SaveDataObject();
+                _ReInitComboBox(_viewController.QuestionsList, listQuestions);
+                listQuestions.SelectedItem = dialog.Value;
             }
         }
 
@@ -169,7 +184,7 @@ namespace Mnemonic
 
         private void DeleteQuestion_Click(object sender, EventArgs e)
         {
-            if(MessageBox.Show(@"Вы уверены, что хотите удалить запись?", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if(listQuestions.SelectedItem != null && MessageBox.Show(@"Вы уверены, что хотите удалить запись?", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 _viewController.DeleteDataObject(listQuestions.Text);
         }
 
@@ -186,21 +201,31 @@ namespace Mnemonic
 
         private void RemoveSubject_Click(object sender, EventArgs e)
         {
-            if (listSubjects.Text.Length != 0
-                && MessageBox.Show(@"Вы уверены, что хотите удалить предмет со всем содержимым?", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (listSubjects.Items.Count == 0 || MessageBox.Show(@"Вы уверены, что хотите удалить предмет со всем содержимым?", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+
+            int i = listSubjects.SelectedIndex - 1;
+            _viewController.DeleteSubject(listSubjects.Text);
+            _ReInitComboBox(_viewController.SubjectsList, listSubjects);
+
+            if (i == -1)
             {
-                int i = listSubjects.SelectedIndex - 1;
-                _viewController.DeleteSubject(listSubjects.Text);
-                _ReInitComboBox(_viewController.SubjectsList, listSubjects);
-                if(i > -1)
-                    listSubjects.SelectedIndex = i;
+                listThemes.Items.Clear();
+                listThemes.Text = _NOELEMENT;
+                listQuestions.Items.Clear();
+                listQuestions.Text = _NOELEMENT;
             }
+            else
+                listSubjects.SelectedIndex = i;
         }
 
         private void AddTheme_Click(object sender, EventArgs e)
         {
-            if(listSubjects.Text.Length == 0) return;
-            
+            if (listSubjects.Items.Count < 1)
+            {
+                MessageBox.Show(@"Добавте сначала хотя бы один Предмет.");
+                return;
+            }
+
             var dialog = new NameDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -212,15 +237,19 @@ namespace Mnemonic
 
         private void RemoveTheme_Click(object sender, EventArgs e)
         {
-            if (listThemes.Text.Length != 0 && listThemes.Text.Length != 0
-                && MessageBox.Show(@"Вы уверены, что хотите удалить тему со всем содержимым?", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (listThemes.Items.Count == 0 || MessageBox.Show(@"Вы уверены, что хотите удалить тему со всем содержимым?", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel) == DialogResult.Cancel) return;
+
+            int i = listThemes.SelectedIndex - 1;
+            _viewController.DeleteDataTheme(listSubjects.Text, listThemes.Text);
+            _ReInitComboBox(_viewController.ThemesList, listThemes);
+
+            if (i == -1)
             {
-                int i = listThemes.SelectedIndex - 1;
-                _viewController.DeleteDataTheme(listSubjects.Text, listThemes.Text);
-                _ReInitComboBox(_viewController.ThemesList, listThemes);
-                if (i > -1)
-                    listSubjects.SelectedIndex = i;
+                listQuestions.Items.Clear();
+                listQuestions.Text = _NOELEMENT;
             }
+            else
+                listThemes.SelectedIndex = i;
         }
 
         private void listQuestions_SelectedIndexChanged(object sender, EventArgs e)
@@ -264,7 +293,7 @@ namespace Mnemonic
             if(_AddItemInDictionary(_viewController.Images))
                 lb_Images.Items.Add(_viewController.Images.Last().Key);
 
-            if (!_isChangedCurrentQuestion && lb_Images.Focused)
+            if (!_isChangedCurrentQuestion)
                 _ChangeStatus();
         }
 
@@ -276,7 +305,7 @@ namespace Mnemonic
             if(_AddItemInDictionary(_viewController.Audios))
                 lb_Audios.Items.Add(_viewController.Audios.Last().Key);
 
-            if (!_isChangedCurrentQuestion && lb_Audios.Focused)
+            if (!_isChangedCurrentQuestion)
                 _ChangeStatus();
         }
 
@@ -328,6 +357,33 @@ namespace Mnemonic
         {
 
         }
+        private void Images_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if(lb_Images.Items.Count < 1) return;
+
+            if (_AddItemInDictionary(lb_Images.Text, _viewController.Images))
+            {
+                lb_Images.Items.Clear();
+                lb_Images.Items.AddRange(_viewController.Images.Keys.ToArray());
+
+                if (!_isChangedCurrentQuestion && lb_Images.Focused)
+                    _ChangeStatus();
+            }
+        }
+
+        private void Audios_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (lb_Audios.Items.Count < 1) return;
+
+            if (_AddItemInDictionary(lb_Audios.Text, _viewController.Audios))
+            {
+                lb_Audios.Items.Clear();
+                lb_Audios.Items.AddRange(_viewController.Audios.Keys.ToArray());
+
+                if (!_isChangedCurrentQuestion && lb_Audios.Focused)
+                    _ChangeStatus();
+            }
+        }
 
         private void _FillFormData()
         {
@@ -377,13 +433,11 @@ namespace Mnemonic
                     rb_random.Checked = true;
                     break;
             }
-
-            //todo- протестить
-            if (_isChangedCurrentQuestion)
-                _ChangeStatus();
         }
         private void _ChangeStatus()
         {
+            if(listQuestions.SelectedItem == null) return;
+            
             _isChangedCurrentQuestion = !_isChangedCurrentQuestion;
             btn_SaveQuestion.Enabled = !btn_SaveQuestion.Enabled;
 
@@ -415,6 +469,29 @@ namespace Mnemonic
             target.Add(dialog.Description, dialog.Path);
             return true;
         }
+        private bool _AddItemInDictionary(string descriptionOld, IDictionary<string, string> target)
+        {
+            var dialog = new ResDialog(descriptionOld, target[descriptionOld]);
+            while (true)
+            {
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return false;
+                if (dialog.Description == descriptionOld || !target.ContainsKey(dialog.Description))
+                    break;
+
+                MessageBox.Show(@"Ссылка с таким описанием уже содежится в списке.");
+            }
+
+            if (dialog.Description != descriptionOld)
+            {
+                target.Remove(descriptionOld);
+                target.Add(dialog.Description, dialog.Path);
+            }
+            else
+                target[descriptionOld] = dialog.Path;
+
+            return true;
+        }
         private void _BlockNoNumberSymbol(object sender, KeyPressEventArgs e)
         {
             if (!Char.IsNumber(e.KeyChar) || e.KeyChar == '\b')
@@ -433,7 +510,7 @@ namespace Mnemonic
             }
 
             listQuestions.Items.Clear();
-            listQuestions.Text = @"Нет элементов";
+            listQuestions.Text = _NOELEMENT;
             lb_Images.Items.Clear();
             lb_Audios.Items.Clear();
             tb_Term.Clear();

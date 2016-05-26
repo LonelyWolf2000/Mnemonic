@@ -8,7 +8,7 @@ using Mnemonic.View;
 
 namespace Mnemonic.Controller
 {
-    internal class AgentController //: BaseController
+    internal class AgentController
     {
         private static AgentController _instance;
         private BaseController _baseController;
@@ -40,10 +40,9 @@ namespace Mnemonic.Controller
         {
             _dataWork.SaveChangesDB(path);
         }
-        public void OpenDataBase(string path)
+        public bool OpenDataBase(string path)
         {
-            if(_dataWork.OpenDB(path))
-                _dataWork.GetListSubjects();
+            return _dataWork.OpenDB(path);
         }
         public void NewSubject(string name)
         {

@@ -16,7 +16,8 @@ namespace Mnemonic.View
         private static IViewEditMode _instance;
         private AgentController _agentController;
         private string _lastDBOpen_URI;
-        
+        private bool _isDataBaseLoaded;
+
         public event ChangeFields changeFieldsEvent;
         public event OnFileLoaded onFileLoadedEvent;
 
@@ -29,9 +30,14 @@ namespace Mnemonic.View
                 return _instance;
             }
         }
+        public bool IsDataBaseLoaded
+        {
+            get { return _isDataBaseLoaded; }
+        }
 
         public ViewEditMode()
         {
+            _isDataBaseLoaded = false;
             _agentController = AgentController.Instance;
         }
 
@@ -59,6 +65,8 @@ namespace Mnemonic.View
         public void CreateNewBD(string path)
         {
             _agentController.CreateNewDb(path);
+            _isDataBaseLoaded = true;
+            onFileLoadedEvent?.Invoke();
         }
         public void SaveFileDB(string path)
         {
@@ -66,7 +74,8 @@ namespace Mnemonic.View
         }
         public void OpenDataBase(string path)
         {
-            _agentController.OpenDataBase(path);
+            _isDataBaseLoaded =_agentController.OpenDataBase(path);
+            if(!IsDataBaseLoaded) return;
 
             SubjectsList = _agentController.QuerySubjectsList();
             if (SubjectsList != null)

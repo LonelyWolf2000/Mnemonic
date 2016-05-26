@@ -25,6 +25,18 @@ namespace Mnemonic
             InitializeComponent();
         }
 
+        public ResDialog(string description, string path) : this()
+        {
+            this.Text = @"Редактировать ссылку на файл";
+            tb_Description.ForeColor = Color.Black;
+            tb_Path.ForeColor = Color.Black;
+
+            _description = description;
+            _path = path;
+            tb_Description.Text = _description;
+            tb_Path.Text = _path;
+        }
+
         private void btn_OK_Click(object sender, EventArgs e)
         {
             if (((Button)sender).DialogResult != DialogResult.OK)

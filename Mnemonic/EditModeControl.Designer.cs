@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditModeControl));
             this.listSubjects = new System.Windows.Forms.ComboBox();
             this.listQuestions = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -72,6 +73,7 @@
             this.rb_writen = new System.Windows.Forms.RadioButton();
             this.rb_options = new System.Windows.Forms.RadioButton();
             this.EditingPanel = new System.Windows.Forms.Panel();
+            this.btn_ZoomIn = new System.Windows.Forms.Button();
             this.l_errorPreview = new System.Windows.Forms.Label();
             this.btn_AddQuestion = new System.Windows.Forms.Button();
             this.previewPicture = new System.Windows.Forms.PictureBox();
@@ -558,6 +560,8 @@
             // 
             // EditingPanel
             // 
+            this.EditingPanel.BackColor = System.Drawing.Color.Transparent;
+            this.EditingPanel.Controls.Add(this.btn_ZoomIn);
             this.EditingPanel.Controls.Add(this.l_errorPreview);
             this.EditingPanel.Controls.Add(this.groupBox2);
             this.EditingPanel.Controls.Add(this.l_status);
@@ -595,6 +599,17 @@
             this.EditingPanel.Name = "EditingPanel";
             this.EditingPanel.Size = new System.Drawing.Size(905, 454);
             this.EditingPanel.TabIndex = 2;
+            // 
+            // btn_ZoomIn
+            // 
+            this.btn_ZoomIn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_ZoomIn.BackgroundImage")));
+            this.btn_ZoomIn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btn_ZoomIn.Location = new System.Drawing.Point(858, 75);
+            this.btn_ZoomIn.Name = "btn_ZoomIn";
+            this.btn_ZoomIn.Size = new System.Drawing.Size(32, 32);
+            this.btn_ZoomIn.TabIndex = 22;
+            this.btn_ZoomIn.UseVisualStyleBackColor = true;
+            this.btn_ZoomIn.Click += new System.EventHandler(this.ZoomIn_Click);
             // 
             // l_errorPreview
             // 
@@ -699,5 +714,6 @@
         private System.Windows.Forms.CheckBox chb_complete;
         private System.Windows.Forms.Button btn_AddQuestion;
         private System.Windows.Forms.Label l_errorPreview;
+        private System.Windows.Forms.Button btn_ZoomIn;
     }
 }

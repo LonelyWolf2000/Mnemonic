@@ -31,9 +31,9 @@
             this.TopMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.создатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.testingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,6 +71,13 @@
             this.создатьToolStripMenuItem.Text = "Создать";
             this.создатьToolStripMenuItem.Click += new System.EventHandler(this.CreateNew);
             // 
+            // openMenuItem
+            // 
+            this.openMenuItem.Name = "openMenuItem";
+            this.openMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.openMenuItem.Text = "Открыть";
+            this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
+            // 
             // saveMenuItem
             // 
             this.saveMenuItem.Name = "saveMenuItem";
@@ -84,13 +91,6 @@
             this.saveAsMenuItem.Size = new System.Drawing.Size(162, 22);
             this.saveAsMenuItem.Text = "Сохранить как...";
             this.saveAsMenuItem.Click += new System.EventHandler(this.saveAsMenuItem_Click);
-            // 
-            // openMenuItem
-            // 
-            this.openMenuItem.Name = "openMenuItem";
-            this.openMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.openMenuItem.Text = "Открыть";
-            this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -137,7 +137,9 @@
             this.ClientSize = new System.Drawing.Size(904, 481);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.TopMenu);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();

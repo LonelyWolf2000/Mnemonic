@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.DirectX;
+using Microsoft.DirectX.AudioVideoPlayback;
 using Mnemonic.Model;
 using Mnemonic.View;
 
@@ -18,6 +20,7 @@ namespace Mnemonic
         private static EditModeControl _instance;
         private ViewEditMode _viewController;
         private bool _isChangedCurrentQuestion;
+        private Audio _audioTrack;
 
         public static EditModeControl Instance
         {
@@ -353,9 +356,22 @@ namespace Mnemonic
                 l_errorPreview.Visible = true;
             }
         }
+
         private void Audio_SelectedValueChanged(object sender, EventArgs e)
         {
+            string uri;
+            _viewController.Audios.TryGetValue(lb_Audios.Text, out uri);
 
+            try
+            {
+                _audioTrack = new Audio(@"E:\Project Visual Studio\MyProjects\C#\Mnemonic\Memonic\Mnemonic\Mnemonic\bin\Debug\audios\doktor_haus_-_glavniy_saundtrek.mp3");
+                _audioTrack.Play();
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
         }
         private void Images_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -383,6 +399,18 @@ namespace Mnemonic
                 if (!_isChangedCurrentQuestion && lb_Audios.Focused)
                     _ChangeStatus();
             }
+        }
+
+        private void ZoomIn_Click(object sender, EventArgs e)
+        {
+            if (previewPicture.Image == null) return;
+
+            Form f = new Form {FormBorderStyle = FormBorderStyle.FixedToolWindow, StartPosition = FormStartPosition.CenterParent};
+
+            f.Controls.Add(new PictureBox { Dock = DockStyle.Fill, Image = previewPicture.Image });
+            f.ClientSize = previewPicture.Image.Size;
+
+            f.ShowDialog();
         }
 
         private void _FillFormData()
@@ -497,7 +525,6 @@ namespace Mnemonic
             if (!Char.IsNumber(e.KeyChar) || e.KeyChar == '\b')
                 e.Handled = true;
         }
-
         private void _ResetFields()
         {
             if (_isChangedCurrentQuestion)

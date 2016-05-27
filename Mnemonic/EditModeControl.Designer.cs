@@ -77,6 +77,7 @@
             this.l_errorPreview = new System.Windows.Forms.Label();
             this.btn_AddQuestion = new System.Windows.Forms.Button();
             this.previewPicture = new System.Windows.Forms.PictureBox();
+            this.l_speakerStatus = new System.Windows.Forms.Label();
             this.modeRepeat.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -561,6 +562,7 @@
             // EditingPanel
             // 
             this.EditingPanel.BackColor = System.Drawing.Color.Transparent;
+            this.EditingPanel.Controls.Add(this.l_speakerStatus);
             this.EditingPanel.Controls.Add(this.btn_ZoomIn);
             this.EditingPanel.Controls.Add(this.l_errorPreview);
             this.EditingPanel.Controls.Add(this.groupBox2);
@@ -604,7 +606,7 @@
             // 
             this.btn_ZoomIn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_ZoomIn.BackgroundImage")));
             this.btn_ZoomIn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btn_ZoomIn.Location = new System.Drawing.Point(858, 75);
+            this.btn_ZoomIn.Location = new System.Drawing.Point(861, 72);
             this.btn_ZoomIn.Name = "btn_ZoomIn";
             this.btn_ZoomIn.Size = new System.Drawing.Size(32, 32);
             this.btn_ZoomIn.TabIndex = 22;
@@ -644,6 +646,15 @@
             this.previewPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.previewPicture.TabIndex = 11;
             this.previewPicture.TabStop = false;
+            // 
+            // l_speakerStatus
+            // 
+            this.l_speakerStatus.Image = global::Mnemonic.Properties.Resources.Speaker;
+            this.l_speakerStatus.Location = new System.Drawing.Point(557, 73);
+            this.l_speakerStatus.Name = "l_speakerStatus";
+            this.l_speakerStatus.Size = new System.Drawing.Size(32, 32);
+            this.l_speakerStatus.TabIndex = 4;
+            this.l_speakerStatus.Visible = false;
             // 
             // EditModeControl
             // 
@@ -715,5 +726,6 @@
         private System.Windows.Forms.Button btn_AddQuestion;
         private System.Windows.Forms.Label l_errorPreview;
         private System.Windows.Forms.Button btn_ZoomIn;
+        private System.Windows.Forms.Label l_speakerStatus;
     }
 }

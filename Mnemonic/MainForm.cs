@@ -13,6 +13,7 @@ namespace Mnemonic
 {
     public partial class MainForm : Form
     {
+        private static Controller.AgentController _eventController;
         private string fileName;
 
         public MainForm()
@@ -23,6 +24,7 @@ namespace Mnemonic
 
         private void MyInit()
         {
+            _eventController = Controller.AgentController.Instance;
             MainPanel.Controls.Add(TestingModeControl.Instance);
         }
 

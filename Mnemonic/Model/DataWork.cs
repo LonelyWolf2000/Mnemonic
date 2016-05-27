@@ -32,7 +32,11 @@ namespace Mnemonic.Model
         {
             try
             {//todo -- ТЕСТ проверить корректность при эксепшине, не затрется ли переменная
-                currentDataBase = XDocument.Load(path);
+                XDocument openDataBase = XDocument.Load(path);
+                if (openDataBase.Root.Name != NAMEOFROOTNODE)
+                    return false;
+
+                currentDataBase = openDataBase;
                 return true;
             }
             catch(Exception)

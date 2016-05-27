@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.DirectX;
-using Microsoft.DirectX.AudioVideoPlayback;
 using Mnemonic.Model;
 using Mnemonic.View;
+using WMPLib;
 
 namespace Mnemonic
 {
@@ -20,7 +15,7 @@ namespace Mnemonic
         private static EditModeControl _instance;
         private ViewEditMode _viewController;
         private bool _isChangedCurrentQuestion;
-        private Audio _audioTrack;
+        private WindowsMediaPlayer mediaPlayer;
 
         public static EditModeControl Instance
         {
@@ -37,6 +32,8 @@ namespace Mnemonic
             _viewController = ViewEditMode.Instance as ViewEditMode;
             _viewController.onFileLoadedEvent += OnFileLoadedEvent_Handler;
             _viewController.changeFieldsEvent += OnChangeFieldsEvent_Handler;
+            mediaPlayer = new WindowsMediaPlayer();
+            mediaPlayer.PlayStateChange += Player_PlayChangeState;
             OnFileLoadedEvent_Handler();
             _isChangedCurrentQuestion = false;
         }
@@ -362,16 +359,34 @@ namespace Mnemonic
             string uri;
             _viewController.Audios.TryGetValue(lb_Audios.Text, out uri);
 
+            if (mediaPlayer.playState == WMPPlayState.wmppsPlaying && uri == mediaPlayer.URL)
+            {
+                mediaPlayer.controls.stop();
+                return;
+            }
+
             try
             {
-                _audioTrack = new Audio(@"E:\Project Visual Studio\MyProjects\C#\Mnemonic\Memonic\Mnemonic\Mnemonic\bin\Debug\audios\doktor_haus_-_glavniy_saundtrek.mp3");
-                _audioTrack.Play();
+                mediaPlayer.controls.stop();
+                mediaPlayer.URL = uri;
+                mediaPlayer.controls.play();
             }
             catch (Exception)
             {
-                
-                throw;
+                mediaPlayer?.close();
+                MessageBox.Show(@"Не удалось воспроизвести аудиофайл");
             }
+        }
+
+        private void Player_PlayChangeState(int newState)
+        {
+            if ((WMPPlayState) newState == WMPPlayState.wmppsStopped)
+            {
+                mediaPlayer.close();
+                l_speakerStatus.Visible = false;
+            }
+            if (mediaPlayer.playState == WMPPlayState.wmppsPlaying)
+                l_speakerStatus.Visible = true;
         }
         private void Images_MouseDoubleClick(object sender, MouseEventArgs e)
         {

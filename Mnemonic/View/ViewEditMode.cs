@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Mnemonic.Controller;
 using Mnemonic.Model;
 
@@ -105,10 +103,10 @@ namespace Mnemonic.View
         }
 
         public void SaveDataObject()
-        {//todo - раскоментить
+        {
             _agentController.SaveDataObject(Question);
             QuestionsList = _agentController.QueryQuestionsList(Subject, Theme);
-            //_agentController.SaveFileDb(_lastDBOpen_URI);
+            _agentController.SaveFileDb(_lastDBOpen_URI);
         }
 
         public void DeleteDataObject(string dataObject)

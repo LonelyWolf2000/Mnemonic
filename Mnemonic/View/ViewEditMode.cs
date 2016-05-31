@@ -15,6 +15,9 @@ namespace Mnemonic.View
         private AgentController _agentController;
         private string _lastDBOpen_URI;
         private bool _isDataBaseLoaded;
+        private string[] _subjectsList;
+        private string[] _themesList;
+        private string[] _questionsList;
 
         public event ChangeFields changeFieldsEvent;
         public event OnFileLoaded onFileLoadedEvent;
@@ -54,11 +57,11 @@ namespace Mnemonic.View
         public bool IsCompleted { get; set; }
         public bool IsResetRaiting { get; set; }
 
-        public string[] SubjectsList { get; set; }
+        public string[] SubjectsList => _subjectsList;
 
-        public string[] ThemesList { get; set; }
+        public string[] ThemesList => _themesList;
 
-        public string[] QuestionsList { get; set; }
+        public string[] QuestionsList => _questionsList;
 
         public void CreateNewBD(string path)
         {
@@ -75,11 +78,11 @@ namespace Mnemonic.View
             _isDataBaseLoaded =_agentController.OpenDataBase(path);
             if(!IsDataBaseLoaded) return;
 
-            SubjectsList = _agentController.QuerySubjectsList();
+            _subjectsList = _agentController.QuerySubjectsList();
             if (SubjectsList != null)
-                ThemesList = SelectedSubject(SubjectsList.First());
+                _themesList = SelectedSubject(SubjectsList.First());
             if (ThemesList != null)
-                QuestionsList = SelectedTheme(SubjectsList.First(), ThemesList.First());
+                _questionsList = SelectedTheme(SubjectsList.First(), ThemesList.First());
 
             _lastDBOpen_URI = path;
             onFileLoadedEvent?.Invoke();
@@ -88,13 +91,13 @@ namespace Mnemonic.View
         public void NewSubject(string nameSubject)
         {
             _agentController.NewSubject(nameSubject);
-            SubjectsList = QuerySubjectsList();
+            _subjectsList = QuerySubjectsList();
         }
 
         public void NewTheme(string nameSubject, string nameTheme)
         {
             _agentController.NewTheme(nameSubject, nameTheme);
-            ThemesList = SelectedSubject(nameSubject);
+            _themesList = SelectedSubject(nameSubject);
         }
 
         public void NewDataObject()
@@ -105,7 +108,7 @@ namespace Mnemonic.View
         public void SaveDataObject()
         {
             _agentController.SaveDataObject(Question);
-            QuestionsList = _agentController.QueryQuestionsList(Subject, Theme);
+            _questionsList = _agentController.QueryQuestionsList(Subject, Theme);
             _agentController.SaveFileDb(_lastDBOpen_URI);
         }
 
@@ -117,13 +120,13 @@ namespace Mnemonic.View
         public void DeleteSubject(string nameSubject)
         {
             _agentController.DelSubject(nameSubject);
-            SubjectsList = QuerySubjectsList();
+            _subjectsList = QuerySubjectsList();
         }
 
         public void DeleteDataTheme(string nameSubject, string nameTheme)
         {
             _agentController.DelTheme(nameSubject, nameTheme);
-            ThemesList = SelectedSubject(nameSubject);
+            _themesList = SelectedSubject(nameSubject);
         }
 
         public void AddImage(string name, string uri)
@@ -166,13 +169,13 @@ namespace Mnemonic.View
         
         public string[] SelectedSubject(string subject)
         {
-            ThemesList = _agentController.QueryThemesList(subject);
+            _themesList = _agentController.QueryThemesList(subject);
             return ThemesList;
         }
 
         public string[] SelectedTheme(string subject, string theme)
         {
-            QuestionsList = _agentController.QueryQuestionsList(subject, theme);
+            _questionsList = _agentController.QueryQuestionsList(subject, theme);
             return QuestionsList;
         }
 

@@ -3,26 +3,26 @@ using System.Collections.Generic;
 
 namespace Mnemonic.View
 {
-    internal interface IViewEditMode
+    internal interface IViewEditMode : IDataContainer
     {
-        string[] SubjectsList { get; set; }
-        string[] ThemesList { get; set; }
-        string[] QuestionsList { get; set; }
+        //string[] SubjectsList { get; set; }
+        //string[] ThemesList { get; set; }
+        //string[] QuestionsList { get; set; }
 
-        //Поля для обмена информацией между формой и контроллером
-        string Question { get; set; }
-        string Subject { get; set; }
-        string Theme { get; set; }
-        string Term { get; set; }
-        string Definition { get; set; }
-        Dictionary<string, string> Images { get; set; }
-        Dictionary<string, string> Audios { get; set; }
-        int Rating { get; set; }
-        Model.ModeTest ModeTest { get; set; }
-        Model.ModeRepeat ModeRepeat { get; set; }
-        DateTime RepeatTime { get; set; }
-        bool IsResetRaiting { get; }
-        bool IsCompleted { get; set; }
+        ////Поля для обмена информацией между формой и контроллером
+        //string Question { get; set; }
+        //string Subject { get; set; }
+        //string Theme { get; set; }
+        //string Term { get; set; }
+        //string Definition { get; set; }
+        //Dictionary<string, string> Images { get; set; }
+        //Dictionary<string, string> Audios { get; set; }
+        //int Rating { get; set; }
+        //Model.ModeTest ModeTest { get; set; }
+        //Model.ModeRepeat ModeRepeat { get; set; }
+        //DateTime RepeatTime { get; set; }
+        //bool IsResetRaiting { get; }
+        //bool IsCompleted { get; set; }
 
         //Создать новый файл БД
         void CreateNewBD(string path);
@@ -54,21 +54,21 @@ namespace Mnemonic.View
         void DeleteAudio(string name);
 
 
-        // Запросить список предметов
-        string[] QuerySubjectsList();
-        //Обработать выбор вопроса
-        void SelectedQuestion(string question);
-        //Обработать выбор предмета
-        string[] SelectedSubject(string subject);
-        //Обработать выбор темы
-        string[] SelectedTheme(string subject, string theme);
-        //Обработать выбор изображения
-        void SelectionImage(string name);
-        //Обработать выбор аудио
-        void SelectionAudio(string name);
+        //// Запросить список предметов
+        //string[] QuerySubjectsList();
+        ////Обработать выбор вопроса
+        //void SelectedQuestion(string question);
+        ////Обработать выбор предмета
+        //string[] SelectedSubject(string subject);
+        ////Обработать выбор темы
+        //string[] SelectedTheme(string subject, string theme);
+        ////Обработать выбор изображения
+        //void SelectionImage(string name);
+        ////Обработать выбор аудио
+        //void SelectionAudio(string name);
 
 
-        //Обновить интерфейс пользователя
-        void RefreshUserInterface();
+        ////Обновить интерфейс пользователя
+        //void RefreshUserInterface();
     }
 }

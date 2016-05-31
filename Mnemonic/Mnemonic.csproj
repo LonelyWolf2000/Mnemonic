@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="Controller\BaseController.cs" />
     <Compile Include="Controller\AgentController.cs" />
+    <Compile Include="Controller\ITestingKnowledge.cs" />
     <Compile Include="EditModeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -140,13 +141,21 @@
       <DependentUpon>SettingTestingMode.cs</DependentUpon>
     </Compile>
     <Compile Include="Testes\TestingDataWork.cs" />
+    <Compile Include="RepeatingModeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RepeatingModeControl.designer.cs">
+      <DependentUpon>RepeatingModeControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestingModeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="TestingModeControl.designer.cs">
       <DependentUpon>TestingModeControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\IDataContainer.cs" />
     <Compile Include="View\IViewEditMode.cs" />
+    <Compile Include="View\IViewTestMode.cs" />
     <Compile Include="View\ViewEditMode.cs" />
     <Compile Include="Controller\EventsMnem.cs" />
     <EmbeddedResource Include="EditModeControl.resx">
@@ -173,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SettingTestingMode.resx">
       <DependentUpon>SettingTestingMode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RepeatingModeControl.resx">
+      <DependentUpon>RepeatingModeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestingModeControl.resx">
       <DependentUpon>TestingModeControl.cs</DependentUpon>

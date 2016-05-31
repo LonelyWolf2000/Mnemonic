@@ -39,6 +39,7 @@
             this.editingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.режимПовтораToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TopMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,6 +96,7 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.режимПовтораToolStripMenuItem,
             this.testingMenuItem,
             this.editingMenuItem,
             this.settingsMenuItem});
@@ -130,6 +132,12 @@
             this.MainPanel.Size = new System.Drawing.Size(904, 457);
             this.MainPanel.TabIndex = 4;
             // 
+            // режимПовтораToolStripMenuItem
+            // 
+            this.режимПовтораToolStripMenuItem.Name = "режимПовтораToolStripMenuItem";
+            this.режимПовтораToolStripMenuItem.Size = new System.Drawing.Size(259, 22);
+            this.режимПовтораToolStripMenuItem.Text = "Режим повтора";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -161,6 +169,7 @@
         private System.Windows.Forms.ToolStripMenuItem settingsMenuItem;
         private System.Windows.Forms.Panel MainPanel;
         private System.Windows.Forms.ToolStripMenuItem создатьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem режимПовтораToolStripMenuItem;
     }
 }
 

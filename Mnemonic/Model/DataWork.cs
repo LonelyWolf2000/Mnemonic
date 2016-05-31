@@ -177,13 +177,18 @@ namespace Mnemonic.Model
 
         public DataObject[] QueryBySubject(string subject)
         {
+            return QueryBySubject(subject, false);
+        }
+
+        public DataObject[] QueryBySubject(string subject, bool isCompleteFilter)
+        {
             XElement subjElem = _FindSubject(subject);
             if (subjElem == null || !subjElem.Elements().Any()) return null;
             
             DataObject[] finalArr = null;
             foreach (var themeElem in subjElem.Elements())
             {
-                DataObject[] tempArr = QueryByTheme(subject, themeElem.FirstAttribute.Value);
+                DataObject[] tempArr = QueryByTheme(subject, themeElem.FirstAttribute.Value, isCompleteFilter);
                 if (tempArr != null)
                     finalArr = finalArr?.Concat(tempArr).ToArray() ?? tempArr;
             }
@@ -193,20 +198,23 @@ namespace Mnemonic.Model
 
         public DataObject[] QueryByTheme(string subject, string theme)
         {
+            return QueryByTheme(subject, theme, false);
+        }
+
+        public DataObject[] QueryByTheme(string subject, string theme, bool isCompleteFilter)
+        {
             XElement themeElem = _FindTheme(subject, theme);
             if (themeElem == null || !themeElem.Elements().Any()) return null;
-            
-            DataObject[] objOfTheme = new DataObject[themeElem.Elements().Count()];
-            for (int i = 0; i < themeElem.Elements().Count(); i++)
-            {
-                XElement item = themeElem.Elements().ElementAt(i);
-                objOfTheme[i] = _XElementToDataObj(item);
-            }
 
-            return objOfTheme;
+            return _FilterByComlete(themeElem, isCompleteFilter);
         }
 
         public DataObject[] QueryByLastRepeat(DateTime lastRepeat)
+        {
+            return QueryByLastRepeat(lastRepeat, false);
+        }
+
+        public DataObject[] QueryByLastRepeat(DateTime lastRepeat, bool isCompleteFilter)
         {
             if (currentDataBase == null) return null;
             var query = (from subjElement in currentDataBase.Root.Elements()
@@ -214,15 +222,8 @@ namespace Mnemonic.Model
                                     from dataElem in themeElem.Elements()
                                     where DateTime.Parse(dataElem.Element("LastRepeat").Value) <= lastRepeat
                                     select dataElem);
-
-
-            DataObject[] objByRepeatTime = new DataObject[query.Count()];
-            for (int i = 0; i < query.Count(); i++)
-            {
-                objByRepeatTime[i] = _XElementToDataObj(query.ElementAt(i));
-            }
-
-            return objByRepeatTime;
+            
+            return _FilterByComlete((XElement)query, isCompleteFilter);
         }
 
         private XElement _FindSubject(string nameSubject)
@@ -267,6 +268,22 @@ namespace Mnemonic.Model
                 return questions.Single();
 
             return null;
+        }
+
+        private DataObject[] _FilterByComlete(XElement elements, bool isCompleteFilter)
+        {
+            List<DataObject> dataObjects = new List<DataObject>();
+            DataObject tempObj;
+            foreach (var item in elements.Elements())
+            {
+                tempObj = _XElementToDataObj(item);
+                if (!isCompleteFilter)
+                    dataObjects.Add(tempObj);
+                else if (!tempObj.Completed)
+                    dataObjects.Add(tempObj);
+            }
+
+            return dataObjects.Count > 0 ? dataObjects.ToArray() : null;
         }
 
         private XElement _DictionaryToXElement(string parentName, Dictionary<string, string> dictionary)

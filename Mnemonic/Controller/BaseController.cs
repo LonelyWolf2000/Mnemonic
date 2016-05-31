@@ -12,10 +12,6 @@ namespace Mnemonic.Controller
     internal class BaseController
     {
         private static BaseController _instance;
-        //private IDataWork _dataWork;
-        //private IViewEditMode _viewEditMode;
-        //public IDataWork DataWork => _dataWork;
-        //public IViewEditMode ViewEditMode => _viewEditMode;
 
         public static BaseController Instance
         {
@@ -26,12 +22,6 @@ namespace Mnemonic.Controller
                 return _instance;
             }
         }
-
-        //public BaseController()
-        //{
-        //    _dataWork = new DataWork();
-        //    _viewEditMode = View.ViewEditMode.Instance;
-        //}
 
         internal DataObject InitDataObject()
         {

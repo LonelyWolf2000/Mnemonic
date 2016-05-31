@@ -115,6 +115,7 @@ namespace Mnemonic.View
         public void DeleteDataObject(string dataObject)
         {
             _agentController.DelDataObject(this.Question);
+            _questionsList = SelectedTheme(Subject, Theme);
         }
 
         public void DeleteSubject(string nameSubject)

@@ -35,11 +35,11 @@
             this.saveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.режимПовтораToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.режимПовтораToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TopMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -104,6 +104,13 @@
             this.toolStripMenuItem1.Size = new System.Drawing.Size(57, 20);
             this.toolStripMenuItem1.Text = "Режим";
             // 
+            // режимПовтораToolStripMenuItem
+            // 
+            this.режимПовтораToolStripMenuItem.Name = "режимПовтораToolStripMenuItem";
+            this.режимПовтораToolStripMenuItem.Size = new System.Drawing.Size(259, 22);
+            this.режимПовтораToolStripMenuItem.Text = "Режим повтора";
+            this.режимПовтораToolStripMenuItem.Click += new System.EventHandler(this.RepeatingToolStripMenuItem_Click);
+            // 
             // testingMenuItem
             // 
             this.testingMenuItem.Name = "testingMenuItem";
@@ -131,12 +138,6 @@
             this.MainPanel.Name = "MainPanel";
             this.MainPanel.Size = new System.Drawing.Size(904, 457);
             this.MainPanel.TabIndex = 4;
-            // 
-            // режимПовтораToolStripMenuItem
-            // 
-            this.режимПовтораToolStripMenuItem.Name = "режимПовтораToolStripMenuItem";
-            this.режимПовтораToolStripMenuItem.Size = new System.Drawing.Size(259, 22);
-            this.режимПовтораToolStripMenuItem.Text = "Режим повтора";
             // 
             // MainForm
             // 

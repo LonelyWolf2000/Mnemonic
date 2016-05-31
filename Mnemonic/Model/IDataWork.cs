@@ -35,9 +35,15 @@
         DataObject QueryByQuestion(string subject, string theme, string dataObject);
         //Вернуть массив объектов данных по имени объекта
         DataObject[] QueryBySubject(string subject);
+        DataObject[] QueryBySubject(string subject, bool isCompleteFilter);
         //Вернуть массив объектов данных по полю "тема"
         DataObject[] QueryByTheme(string subject, string theme);
-
+        DataObject[] QueryByTheme(string subject, string theme, bool isCompleteFilter);
+        //Вернуть массив объектов данных по дате последнего повтора
         DataObject[] QueryByLastRepeat(System.DateTime lastRepeat);
+        DataObject[] QueryByLastRepeat(System.DateTime lastRepeat, bool isCompleteFilter);
+
+
+
     }
 }

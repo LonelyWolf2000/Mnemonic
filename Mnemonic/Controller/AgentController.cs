@@ -14,6 +14,9 @@ namespace Mnemonic.Controller
         private BaseController _baseController;
         private IDataWork _dataWork;
         private IViewEditMode _viewEditMode;
+
+        public IDataWork DataWork => _dataWork;
+
         public static AgentController Instance
         {
             get

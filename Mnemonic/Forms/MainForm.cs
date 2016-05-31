@@ -44,6 +44,14 @@ namespace Mnemonic
             TestingModeControl.Instance.BringToFront();
         }
 
+        private void RepeatingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!MainPanel.Controls.Contains(RepeatingModeControl.Instance))
+                MainPanel.Controls.Add(RepeatingModeControl.Instance);
+
+            RepeatingModeControl.Instance.BringToFront();
+        }
+
         private void CreateNew(object sender, EventArgs e)
         {
             _CreateNewEndSave();

@@ -105,52 +105,53 @@
     <Compile Include="Controller\BaseController.cs" />
     <Compile Include="Controller\AgentController.cs" />
     <Compile Include="Controller\ITestingKnowledge.cs" />
-    <Compile Include="EditModeControl.cs">
+    <Compile Include="Controller\TestingKnowledge.cs" />
+    <Compile Include="Forms\EditModeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="EditModeControl.Designer.cs">
+    <Compile Include="Forms\EditModeControl.Designer.cs">
       <DependentUpon>EditModeControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\DataObject.cs" />
     <Compile Include="Model\DataWork.cs" />
     <Compile Include="Model\IDataWork.cs" />
-    <Compile Include="NameDialog.cs">
+    <Compile Include="Forms\NameDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NameDialog.Designer.cs">
+    <Compile Include="Forms\NameDialog.Designer.cs">
       <DependentUpon>NameDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResDialog.cs">
+    <Compile Include="Forms\ResDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ResDialog.Designer.cs">
+    <Compile Include="Forms\ResDialog.Designer.cs">
       <DependentUpon>ResDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="SettingTestingMode.cs">
+    <Compile Include="Forms\SettingTestingMode.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingTestingMode.designer.cs">
+    <Compile Include="Forms\SettingTestingMode.designer.cs">
       <DependentUpon>SettingTestingMode.cs</DependentUpon>
     </Compile>
     <Compile Include="Testes\TestingDataWork.cs" />
-    <Compile Include="RepeatingModeControl.cs">
+    <Compile Include="Forms\RepeatingModeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="RepeatingModeControl.designer.cs">
+    <Compile Include="Forms\RepeatingModeControl.designer.cs">
       <DependentUpon>RepeatingModeControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestingModeControl.cs">
+    <Compile Include="Forms\TestingModeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TestingModeControl.designer.cs">
+    <Compile Include="Forms\TestingModeControl.designer.cs">
       <DependentUpon>TestingModeControl.cs</DependentUpon>
     </Compile>
     <Compile Include="View\IDataContainer.cs" />
@@ -158,13 +159,13 @@
     <Compile Include="View\IViewTestMode.cs" />
     <Compile Include="View\ViewEditMode.cs" />
     <Compile Include="Controller\EventsMnem.cs" />
-    <EmbeddedResource Include="EditModeControl.resx">
+    <EmbeddedResource Include="Forms\EditModeControl.resx">
       <DependentUpon>EditModeControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NameDialog.resx">
+    <EmbeddedResource Include="Forms\NameDialog.resx">
       <DependentUpon>NameDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -177,16 +178,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="ResDialog.resx">
+    <EmbeddedResource Include="Forms\ResDialog.resx">
       <DependentUpon>ResDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingTestingMode.resx">
+    <EmbeddedResource Include="Forms\SettingTestingMode.resx">
       <DependentUpon>SettingTestingMode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RepeatingModeControl.resx">
+    <EmbeddedResource Include="Forms\RepeatingModeControl.resx">
       <DependentUpon>RepeatingModeControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestingModeControl.resx">
+    <EmbeddedResource Include="Forms\TestingModeControl.resx">
       <DependentUpon>TestingModeControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">

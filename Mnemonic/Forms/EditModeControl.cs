@@ -184,8 +184,20 @@ namespace Mnemonic
 
         private void DeleteQuestion_Click(object sender, EventArgs e)
         {
-            if(listQuestions.SelectedItem != null && MessageBox.Show(@"Вы уверены, что хотите удалить запись?", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                _viewController.DeleteDataObject(listQuestions.Text);
+            if(listQuestions.SelectedItem == null || MessageBox.Show(@"Вы уверены, что хотите удалить запись?", @"ВНИМАНИЕ", MessageBoxButtons.OKCancel) != DialogResult.OK)
+                return;
+
+            int i = listQuestions.SelectedIndex - 1;
+            _viewController.DeleteDataObject(listQuestions.Text);
+            _ReInitComboBox(_viewController.QuestionsList, listQuestions);
+
+            if (listQuestions.Items.Count == 0)
+            {
+                listQuestions.Items.Clear();
+                listQuestions.Text = _NOELEMENT;
+            }
+            else
+                listQuestions.SelectedIndex = i < 0 ? ++i : i;
         }
 
         private void AddSubject_Click(object sender, EventArgs e)
@@ -207,7 +219,7 @@ namespace Mnemonic
             _viewController.DeleteSubject(listSubjects.Text);
             _ReInitComboBox(_viewController.SubjectsList, listSubjects);
 
-            if (i == -1)
+            if (listSubjects.Items.Count == 0)
             {
                 listThemes.Items.Clear();
                 listThemes.Text = _NOELEMENT;
@@ -215,7 +227,7 @@ namespace Mnemonic
                 listQuestions.Text = _NOELEMENT;
             }
             else
-                listSubjects.SelectedIndex = i;
+                listSubjects.SelectedIndex = i < 0 ? ++i : i;
         }
 
         private void AddTheme_Click(object sender, EventArgs e)
@@ -243,13 +255,13 @@ namespace Mnemonic
             _viewController.DeleteDataTheme(listSubjects.Text, listThemes.Text);
             _ReInitComboBox(_viewController.ThemesList, listThemes);
 
-            if (i == -1)
+            if (listThemes.Items.Count == 0)
             {
                 listQuestions.Items.Clear();
                 listQuestions.Text = _NOELEMENT;
             }
             else
-                listThemes.SelectedIndex = i;
+                listThemes.SelectedIndex = i < 0 ? ++i : i;
         }
 
         private void listQuestions_SelectedIndexChanged(object sender, EventArgs e)
